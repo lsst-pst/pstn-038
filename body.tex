@@ -1,23 +1,174 @@
+
 \section{Introduction}
 
+The focus of the paper will be the early commissioning observations and demonstrating that the processing 
+meets the requirements describes in  LPM-17 and LSE-30. Dependent on the timeline for publication of the 
+paper (e.g. readiness review, data previews) will determine the data set that is presented in this work.
 
-\section{The LSST Alert Production System} 
+\begin{enumerate}
+
+\item Description of Rubin Observatory including telescope, camera, site characteristics 
+\item Description of the science drivers for prompt processing (including science cases) 
+\item Description of the science requirements (OSS and SRD) in the context of observables (photometry, astrometry, number of false positives, 
+classification of variability, variability statistics) and expectations for this stage of processing
+
+\end{enumerate}
+
+\section{The LSST Prompt Processing Pipeline} 
+
+\begin{enumerate}
+
+    \item Overview of the prompt processing pipeline (referencing pstn-021) and the processing of the nightly data
+    \item Paragraph describing the steps in the ISR processing of data: bias subtraction, generation of flats and application to data, 
+    astrometric solutions, photometric calibration (all ISR steps are just at the level of those used in prompt processing)
+    \item Paragraph describing the template generation that is used for this analysis (image-to-image, coaddition, DCR) depending on the 
+    type of analysis working at the time of the ORR
+    \item Paragraph on characterization of the sources (variability measurements and algorithms for the removal of false positives)
+    \item Paragraph on streaming of events (if that is running at the ORR)
+    
+\end{enumerate}
 
 \section{Commissioning Fields and Science Validation Surveys}
+\label{sec:fields}
 
-\section{Difference Image Pipeline Performance}
+\begin{enumerate}
 
-\subsection{Data Processing and Analysis}
-\subsection{Astrometric and Photometric Calibration }
-\subsection{Template generation}
-\subsection{Source detection and completeness}
+    \item Description of field used in prompt processing testing: comcam fields (if we decide to publish comcam data), 
+    deep drilling fields (positions, filters, depth). Include description of existing data in these fields specific to variability 
+    or moving sources
+    \item Description of template generation (observations that go into the templates, airmass range, removal of bad pixels, constraints due to 
+    the limited baseline for the generation of the templates - limits on tests of proper motion and moving sources)
+    \item Characteristics of the images: noise level (sky and bias), source density, stellar and galaxy density 
+    \item Table of the observations used in the analysis in this paper (time, filters, depth, image quality, airmass, cadence)
+    \item Reference to PSTN-039 and other papers that describe filter throughputs
+    \item Figures showing example data, images with sources identified on them, templates, resulting difference images
+
+\end{enumerate}
 
 
-\section{Source Characterization and Alert Generation}
-\subsection{Source classification and false positives}
-\subsection{Deep-learning training and classification performance}
-\subsection{Alert distribution and packages}
+\section{Characteristics of Photometric and Astrometric Performance}
 
-\section{Alert Performance and Comparison to Extant Data Sets}
+Details for how we measured the astrometric and photometric performance would be in PSTN-039. Here we would just describe the 
+accuracy of system with respect to  image differencing.
+
+\begin{enumerate}
+
+    \item Description of the astrometric residuals relative to Gaia from a single visit and averaged over a series of images. Focus will be 
+    on the focal plane variation in astrometry and how that relates to dipoles and artifacts within the image differencing
+    \item Figure of the astrometric vector field for residuals and the histogram of the astrometric residuals
+    \item Description of photometric precision of individual images compared to an existing space based photometric catalog
+    \item Figure of the photometric residuals (mag difference vs limiting magnitude) for a single CCD and a histogram of residuals for the full focal plane
+     (depending on any calibration issues that might be uncovered)
+
+\end{enumerate}
+
+\section{Image subtraction and the detection of moving and variable sources}
+
+\begin{enumerate}
+
+    \item Description of the templates that are used in \ref{sec:fields} (depends if DCR, or traditional templates are adopted)
+    \item Description of the source density on subtracted images and the numbers of true and false positives. Description of how 
+    artifacts were identified and classified (probably identified by eye or cross correlated with known variable catalogs). For known main sequence variable stars plot the colors of these sources (assumes small temporal difference in observations)
+    to demonstrate the photometric performance. For known  variable stars detected by Gaia show residuals in the astrometric performance
+    \item Figure comparing astrometry and colors of single visit and image subtraction sources 
+    \item Description of artifacts within the data: characteristics (dipoles, scattered light, ghosts, etc). Comparison to ZTF, DECam data in terms
+    of numbers of artifacts and types of artifacts present in the data
+    \item Figure showing mosaic of artifacts
+    \item Comparison of numbers of sources and false positives with different templates (assuming we have different types)
+
+\end{enumerate}
+
+
+\section{Event classification and filtering}
+
+\begin{enumerate}
+
+    \item Description of the event classification algorithm (neural network architecture) and the training sample including how these sources were
+    visually classified (number of sources in the training, types of labels of sources, uncertainty or dispersion in the classified labels from human classifiers)
+    templates that are used in \ref{sec:fields} (depends if DCR, or traditional templates are adopted)
+    \item Description of performance of the classifier (confusion matrix) in terms of the number of false and true positives including as a function 
+    of image quality, airmass, focal plane, stellar density.
+    \item Figure of confusion matrix for all labels user in the classifier
+    \item Figure of ROC curve for the true/artifact classification (with a definition of the threshold that meets the OSS and SRD on required number of false positives)
+    \item Description of how the classification depends on observing conditions: airmass, position on focal plane, image quality, signal-to-noise
+    \item Description of the sources density of variable stars and comparisons to Gaia or other variable star catalogs
+    \item Comment on the use of quality flags and spuriousness metric for removing artifacts in the data
+    
+\end{enumerate}
+
+\section{Source completeness and contamination}
+
+\begin{enumerate}
+
+    \item Description of the source injection process for estimating completeness.
+    \item Figure of the number of sources as a function of magnitude that are recovered
+    \item Comparison of variable sources that are detected on multiple images (with different spatial and rotational dithers) as a measure of single
+    visit contamination (assume that sources detected are a range of rotation angles are true variable sources and those detected on single images are 
+    contamination)
+    \item Figure of the number of sources false positives as a function of magnitude
+    \item Comment on the issues of deblending if in a high density field
+    \item 
+\end{enumerate}
+
+\section{Characterizing variability in the Rubin data}
+
+\begin{enumerate}
+
+    \item Description of the variability metrics in the prompt processing data (reference back to PSTN-021) including period estimation
+    \item Crossmatch against existing variable catalogs (e.g. RR Lyrae from Gaia) with accurate periods. Describe the completeness of the 
+    source crossmatches. 
+    \item Description of how well the Rubin variability measures compared to published values including periods (note the time scale of the observations
+    will likely limit this to variable stars with variability less than a few days)
+    \item Figure comparing the Rubin metrics to those derived from Gaia or deeper datasets (period, variability characteristics)
+    \item Figure showing example light curves compared to Gaia lightcurves for a subset of know variables
+    \item Comment on the ability to recover periods or other variability measures with number of epochs of observations and the benefit of the 
+    forced photometry for light curves
+
+\end{enumerate}
+
+\section{Alert distribution in the commissioning data}
+
+This section will depend on whether alerts are generated within commissioning (even if they are not made public) and whether a Science Validation data set is used or 
+a Deep Drilling Field
+
+\begin{enumerate}
+
+    \item Description of the schema for the alert packets and the Kafka stream: cite PSTN-021 and the DPDD. Description of the number of 
+    alert packages generated in a single nightly
+    \item Description of the timing of the prompt processing and alert distribution (time to produce alerts, number of alerts emitted) together with
+    any dependence on focal plane, stellar density, image quality in terms of the numbers alerts and the timing of the alerts.
+    \item Figure for the all sky distribution of alerts from a single night
+    
+\end{enumerate}
+
+\section{Classes of astronomical sources in the commissioning data}
+
+\begin{enumerate}
+
+    \item Description of examples of astronomically interesting lightcurves. THis would include the identification of SN, asteroids, variable stars etc Expectation that 
+    any discoveries would be part of separate papers and here we would just describe a set of example sources from the SRD science cases to show
+    that we can recover these sources in the early Rubin data.
+    
+    
+    the event classification algorithm (neural network architecture) and the training sample including how these sources were
+    visually classified (number of sources in the training, types of labels of sources, uncertainty or dispersion in the classified labels from human classifiers)
+    templates that are used in \ref{sec:fields} (depends if DCR, or traditional templates are adopted)
+    \item Description of performance of the classifier (confusion matrix) in terms of the number of false and true positives. 
+    \item Figure of confusion matrix for all labels user in the classifier
+    \item Figure of ROC curve for the true/artifact classification (with a definition of the threshold that meets the OSS and SRD on required number of false positives)
+    \item Description of how the classification depends on observing conditions: airmass, position on focal plane, image quality, signal-to-noise
+    \item Description of the sources density of variable stars and comparisons to Gaia or other variable star catalogs
+    
+\end{enumerate}
+
+
+\section {Readiness of the Rubin Prompt Processing}
+
+\begin{enumerate}
+
+    \item Summary of the metrics that were used define prompt processing readiness and how the current data performs
+    \item Description of any issues that are known about in the quality of the data that will be addressed in future releases (so readers know what they should report on)   
+    
+ \end{enumerate}
 
 
